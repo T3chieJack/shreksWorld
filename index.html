@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Shreks</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+        }
+
+        .counter {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            color: black;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .shrek {
+            position: absolute;
+            width: 100px;
+            height: auto;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="counter">Shreks: <span id="shrekCounter">0</span></div>
+    <script>
+        const spawnInterval = 2000; // Initial time between Shreks in ms
+        let counter = 0;
+        let speedMultiplier = 0.9; // Spawning gets 10% faster each time
+        let currentInterval = spawnInterval;
+
+        const shrekCounter = document.getElementById('shrekCounter');
+
+        function spawnShrek() {
+            counter++;
+            shrekCounter.textContent = counter;
+
+            const shrek = document.createElement('img');
+            shrek.src = './assets/shrek.png'; // Path to your Shrek image
+            shrek.className = 'shrek';
+
+            // Randomize Shrek's position
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            shrek.style.left = Math.random() * (screenWidth - 100) + 'px';
+            shrek.style.top = Math.random() * (screenHeight - 100) + 'px';
+
+            document.body.appendChild(shrek);
+
+            // Increase speed of spawning
+            currentInterval *= speedMultiplier;
+
+            // Reset interval with the new speed
+            clearTimeout(spawnTimeout);
+            spawnTimeout = setTimeout(spawnShrek, currentInterval);
+        }
+
+        let spawnTimeout = setTimeout(spawnShrek, currentInterval);
+    </script>
+</body>
+</html>
